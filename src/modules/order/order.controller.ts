@@ -5,6 +5,8 @@ import { Controller, Post } from '@nestjs/common';
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
-  //   @Post()
-  //   async submitOrder() {}
+  @Post()
+  async submitOrder() {
+    this.orderService.submitOrder();
+  }
 }

@@ -23,6 +23,7 @@ export class PostEntity {
 
   @Column({ type: 'enum', enum: mainCategory }) category: string;
 
+  @Column({ type: 'boolean', nullable: false, default: true }) visible: boolean;
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'user_id' })
   user_id: UserEntity;
