@@ -1,6 +1,6 @@
 import { PostEntity } from '../../entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateBoardPostDto } from '../post/dto/createBoardDto';
 
 export class PostService {
@@ -18,8 +18,13 @@ export class PostService {
     return 'OK';
   }
 
-  async getPostList() {
-    const boardList = await this.postRepo.find();
+  async getPostList(category: string) {
+    if (!category) {
+      category = `%%`;
+    }
+    const boardList = await this.postRepo.find({
+      where: { category: Like(category), visible: true },
+    });
     return boardList;
   }
 
@@ -34,7 +39,7 @@ export class PostService {
   }
 
   async deletePost(postId) {
-    this.postRepo.delete({ post_id: postId });
+    this.postRepo.update({ post_id: postId }, { visible: false });
     const deletedAt = new Date();
     return { success: true, post_title: postId, deletedAt };
   }

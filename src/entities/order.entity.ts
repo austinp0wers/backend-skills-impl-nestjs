@@ -7,13 +7,16 @@ import {
   Unique,
 } from 'typeorm';
 
-@Entity('order')
+@Entity('order_logs')
 @Unique(['order_id'])
 export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   order_id: string;
 
   @Column({ type: 'enum', enum: mainCategory }) category: string;
-
-  @CreateDateColumn() createdAt?: Date;
+  @Column({ type: 'varchar' }) location: string;
+  @Column({ type: 'varchar' }) user_id: string;
+  @Column({ type: 'varchar' }) status: string;
+  @CreateDateColumn()
+  createdAt?: Date;
 }

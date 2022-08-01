@@ -1,3 +1,4 @@
+import { mainCategory } from './../../common/enum/categoryType.enum';
 import { DeletePostStatus } from './interfaces/postDelete.interface';
 import { JwtService } from '@nestjs/jwt';
 import { HttpExceptionFilter } from 'src/exceptions/httpException';
@@ -19,6 +20,7 @@ import {
   HttpCode,
   UseGuards,
   Headers,
+  Query,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
@@ -68,8 +70,9 @@ export class PostController {
   @ApiOperation({ summary: '계시물 목록 전체 조회' })
   @Get('')
   @HttpCode(200)
-  async getBoardList() {
-    return await this.postService.getPostList();
+  async getBoardList(@Query('category') category: string) {
+    console.log('category', category);
+    return await this.postService.getPostList(category);
   }
 
   @UseGuards(JwtAuthGuard)

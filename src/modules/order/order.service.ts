@@ -1,7 +1,8 @@
 export class OrderService {
-  async submitOrder() {
-    // check for credentials
-    // request payment
-    // save the order log.
+  async submitOrder(post_id: string) {
+    // check for credentials = Auth guard will check the token.
+    // request payment = bootpay will do.
+    // save the order log = DB.
+    return 'hello world';
   }
 }
