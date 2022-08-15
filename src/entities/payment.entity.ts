@@ -8,7 +8,7 @@ import {
 
 @Entity('payment_logs')
 @Unique(['payment_id'])
-export class OrderEntity {
+export class paymentEntity {
   @PrimaryGeneratedColumn('uuid')
   payment_id: string;
 

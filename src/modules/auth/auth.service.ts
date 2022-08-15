@@ -11,8 +11,8 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    private userServices: UserService,
-    private jwtServices: JwtService,
+    private userService: UserService,
+    private jwtService: JwtService,
   ) {}
 
   async register(userDto: CreateUserDto): Promise<RegisterStatus> {
@@ -20,9 +20,8 @@ export class AuthService {
       success: true,
       message: 'user successfully registered',
     };
-    console.log('userDto', userDto);
     try {
-      await this.userServices.create(userDto);
+      await this.userService.create(userDto);
     } catch (err) {
       status = {
         success: false,
@@ -35,7 +34,7 @@ export class AuthService {
   async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
     let user;
     try {
-      user = await this.userServices.findByLogin(loginUserDto);
+      user = await this.userService.findByLogin(loginUserDto);
     } catch (err) {
       throw Error('findByLogin Internal server error');
     }
@@ -53,11 +52,11 @@ export class AuthService {
     };
   }
 
-  private _createJWTToken({ email, role }: UserDto): any {
+  private _createJWTToken({ id, role }: UserDto): any {
     const expiresIn = process.env.EXPIRESIN;
 
-    const user: JwtPayload = { email, role };
-    const accessToken = this.jwtServices.sign(user);
+    const user: JwtPayload = { id, role };
+    const accessToken = this.jwtService.sign(user);
     return {
       expiresIn,
       accessToken,
