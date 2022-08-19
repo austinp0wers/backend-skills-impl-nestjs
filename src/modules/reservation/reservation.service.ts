@@ -38,5 +38,18 @@ export class ReservationService {
     return orderList;
   }
 
-  async findReservation() {}
+  async findReservation(jwtHeader: JwtPayload, reservation_id: string) {
+    const user_id = jwtHeader.id;
+    //user_id === reservation.user_id
+
+    const reservation = await this.reservationRepo.findOne({
+      where: {
+        reservation_id,
+        user_id,
+      },
+      relations: ['shop_id'],
+    });
+
+    return reservation;
+  }
 }

@@ -41,8 +41,12 @@ export class ReservationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':reservation')
-  async findReservation() {
-    return this.reservationService.findReservation();
+  @Get(':reservation_id')
+  async findReservation(
+    @Param('reservation_id') reservation_id: string,
+    @Headers('Authorization') authorization: string,
+  ) {
+    const decodedJwt: JwtPayload = getDecodedJwt(authorization);
+    return this.reservationService.findReservation(decodedJwt, reservation_id);
   }
 }
