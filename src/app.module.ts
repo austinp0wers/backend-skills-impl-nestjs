@@ -6,9 +6,9 @@ import { typeORMconfig } from './database/mysql/mysql.typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigurationModule } from './database/db.module';
 import { UserModule } from './modules/user/user.module';
-import { PostModule } from './modules/post/post.module';
+import { ShopModule } from './modules/shop/shop.module';
 import { ConfigModule } from '@nestjs/config';
-import { OrderModule } from './modules/reservation/reservation.module';
+import { ReservationModule } from './modules/reservation/reservation.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,8 +19,8 @@ import { OrderModule } from './modules/reservation/reservation.module';
     AuthModule,
     ConfigurationModule,
     UserModule,
-    PostModule,
-    OrderModule,
+    ShopModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -20,13 +20,13 @@ export class ReservationController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':shop_id')
-  async submitOrder(
+  async makeReservation(
     @Param('shop_id') shop_id: string,
     @Body() submitOrder: SubmitOrderDto,
     @Headers('Authorization') authorization: string,
   ) {
     const decodedJwt: JwtPayload = getDecodedJwt(authorization);
-    return this.reservationService.submitOrder(
+    return this.reservationService.makeReservation(
       submitOrder,
       shop_id,
       decodedJwt,
@@ -34,12 +34,15 @@ export class ReservationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':post_id')
-  async getOrders(
-    @Param('post_id') post_id: string,
-    @Headers('Authorization') authorization: string,
-  ) {
+  @Get()
+  async findAllReservations(@Headers('Authorization') authorization: string) {
     const decodedJwt: JwtPayload = getDecodedJwt(authorization);
-    return this.reservationService.findOrders(post_id, decodedJwt);
+    return this.reservationService.findAllReservations(decodedJwt);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':reservation')
+  async findReservation() {
+    return this.reservationService.findReservation();
   }
 }

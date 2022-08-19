@@ -14,7 +14,7 @@ export default class UserService {
     private userRepo: Repository<UserEntity>,
   ) {}
   async create(userDto: CreateUserDto): Promise<UserDto> {
-    const { email, name, password } = userDto;
+    const { email, name, password, phoneNumber } = userDto;
 
     const userInDb = await this.userRepo.findOne({ where: { email } });
     if (userInDb) {
@@ -25,6 +25,7 @@ export default class UserService {
       email,
       name,
       password,
+      phoneNumber,
     });
 
     try {

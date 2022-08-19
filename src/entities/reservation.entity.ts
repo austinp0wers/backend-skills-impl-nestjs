@@ -1,9 +1,10 @@
+import { ShopEntity } from './shop.entity';
 import { mainCategory } from '../common/enum/categoryType.enum';
-import { PostEntity } from './post.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
@@ -16,15 +17,17 @@ export class ReservationEntity {
   reservation_id: string;
 
   @Column({ type: 'enum', enum: mainCategory, default: null }) category: string;
-  @Column({ type: 'varchar', nullable: false }) shop_id: string;
+
   @Column({ type: 'varchar' }) user_id: string;
+
   @Column({ type: 'varchar', default: 'pending' }) status: string;
 
-  @Column({ type: 'datetime', nullable: false }) date_only: Date;
+  @Column({ type: 'datetime', nullable: false }) reserve_date: Date;
+
+  @ManyToOne((type) => ShopEntity, (shop) => shop.shop_id)
+  @JoinColumn({ name: 'shop_id' })
+  shop_id: ShopEntity;
 
   @CreateDateColumn()
   createdAt?: Date;
-
-  @ManyToOne(() => PostEntity, (post) => post.post_id)
-  post_id: PostEntity;
 }

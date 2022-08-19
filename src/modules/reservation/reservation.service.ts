@@ -7,33 +7,36 @@ import { Repository } from 'typeorm';
 export class ReservationService {
   constructor(
     @InjectRepository(ReservationEntity)
-    private orderRepo: Repository<ReservationEntity>,
+    private reservationRepo: Repository<ReservationEntity>,
   ) {}
-  async submitOrder(
+  async makeReservation(
     orderInfo: SubmitOrderDto,
-    shop_id: string,
+    shop_id: any,
     decodedJwt: JwtPayload,
   ) {
     const { reserve_date } = orderInfo;
+    const reservedDate = new Date(reserve_date);
+
     const orderInformation = {
       user_id: decodedJwt.id,
-      reserve_date,
+      reserve_date: reservedDate,
       shop_id,
     };
-    const orderInsertResult = await this.orderRepo.insert(orderInformation);
-    console.log('orderInsertResult', orderInsertResult);
+    const orderInsertResult = await this.reservationRepo.insert(
+      orderInformation,
+    );
     return orderInsertResult;
   }
-  async findOrders(post_id: string, jwtHeader: JwtPayload) {
-    //  user_id 가 jwtHeader.id 인 orders 를 orders 테이블에서검색
-    //post_id 로 join 을 해서, 해당 post 의 title 이랑 category 만 불러 오자.
 
+  async findAllReservations(jwtHeader: JwtPayload) {
     const user_id = jwtHeader.id;
-    const orderList = await this.orderRepo.find({
-      relations: ['post_id'],
+    const orderList = await this.reservationRepo.find({
+      relations: ['shop'],
     });
 
-    console.log('orderList', JSON.stringify(orderList));
+    console.log('orderList', orderList);
     return orderList;
   }
+
+  async findReservation() {}
 }

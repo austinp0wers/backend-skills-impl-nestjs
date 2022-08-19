@@ -1,11 +1,8 @@
-import { PostEntity } from './post.entity';
 import {
   BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -20,10 +17,6 @@ export class UserEntity {
   @Column({ type: 'varchar', nullable: false }) phoneNumber: string;
   @CreateDateColumn() createdOn?: Date;
   @CreateDateColumn() updatedOn?: Date;
-
-  @OneToMany(() => PostEntity, (PostEntity) => PostEntity.user_id)
-  @JoinColumn({ name: 'post_id' })
-  post_id: PostEntity[];
 
   @BeforeInsert()
   async hashPassword() {

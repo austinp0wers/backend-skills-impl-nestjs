@@ -13,4 +13,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   role: string;
+
+  @IsNotEmpty()
+  phoneNumber: string;
 }

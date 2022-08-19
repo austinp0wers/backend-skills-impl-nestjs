@@ -1,10 +1,9 @@
-import { mainCategory } from './../../common/enum/categoryType.enum';
-import { DeletePostStatus } from './interfaces/postDelete.interface';
+import { DeleteShopStatus } from './interfaces/shopDelete.interface';
 import { JwtService } from '@nestjs/jwt';
 import { HttpExceptionFilter } from 'src/exceptions/httpException';
-import { PostService } from './post.service';
-import { UpdatePostDto } from '../post/dto/updateBoardDto';
-import { CreateBoardPostDto } from '../post/dto/createBoardDto';
+import { ShopService } from './shop.service';
+import { UpdatePostDto } from './dto/updateBoardDto';
+import { CreateBoardPostDto } from './dto/createBoardDto';
 import { JwtAuthGuard } from '../../guards/jwt.guard';
 import {
   Body,
@@ -25,11 +24,11 @@ import {
 import { Response } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
 
-@Controller('post')
+@Controller('shop')
 @UseFilters(new HttpExceptionFilter())
-export class PostController {
+export class ShopController {
   constructor(
-    private postService: PostService,
+    private shopService: ShopService,
     private jwtService: JwtService,
   ) {}
 
@@ -42,7 +41,7 @@ export class PostController {
     @Res() res: Response,
   ) {
     // 'Bearer ' 제거 하고 decode 해야 한다.
-    await this.postService.createPost(createPostDto);
+    await this.shopService.registerShop(createPostDto);
     return res.status(HttpStatus.OK).json({
       code: 200,
       msg: 'OK',
@@ -51,35 +50,36 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '계시물 수정' })
-  @Patch(':id')
+  @Patch(':shop_id')
   @HttpCode(200)
   async updatePost(
-    @Param('id') id: string,
+    @Param('shop_id') shop_id: string,
     @Body() updatePostDto: UpdatePostDto,
   ) {
-    return this.postService.updatePost(id, updatePostDto);
+    return this.shopService.updateShop(shop_id, updatePostDto);
   }
 
   @ApiOperation({ summary: '계시물 조회' })
-  @Get(':id')
+  @Get(':shop_id')
   @HttpCode(200)
-  async readPost(@Param('id') post_id: string) {
-    return this.postService.getPost(post_id);
+  async readPost(@Param('shop_id') shop_id: string) {
+    return this.shopService.getShop(shop_id);
   }
 
   @ApiOperation({ summary: '계시물 목록 전체 조회' })
   @Get('')
   @HttpCode(200)
   async getBoardList(@Query('category') category: string) {
-    console.log('category', category);
-    return await this.postService.getPostList(category);
+    return await this.shopService.getShopList(category);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '계시물 삭제' })
-  @Delete(':id')
+  @Delete(':shop_id')
   @HttpCode(200)
-  async deletePoset(@Param('id') id): Promise<DeletePostStatus> {
-    return this.postService.deletePost(id);
+  async deletePoset(
+    @Param('shop_id') shop_id: string,
+  ): Promise<DeleteShopStatus> {
+    return this.shopService.deleteShop(shop_id);
   }
 }

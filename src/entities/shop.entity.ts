@@ -1,12 +1,9 @@
-import { ReservationEntity } from './reservation.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -14,10 +11,10 @@ import { mainCategory } from '../common/enum/categoryType.enum';
 import { UserEntity } from './user.entity';
 
 @Entity('shop')
-@Unique(['post_id'])
-export class PostEntity {
+@Unique(['shop_id'])
+export class ShopEntity {
   @PrimaryGeneratedColumn('uuid')
-  post_id: string;
+  shop_id: string;
 
   @Column({ type: 'varchar', nullable: false })
   title: string;
@@ -28,9 +25,9 @@ export class PostEntity {
 
   @Column({ type: 'boolean', nullable: false, default: true }) visible: boolean;
 
-  @ManyToOne(() => UserEntity)
-  @JoinColumn({ name: 'user_id' })
-  user_id: UserEntity;
+  // @ManyToOne(() => UserEntity)
+  // @JoinColumn({ name: 'user_id' })
+  // user_id: UserEntity;
 
   @CreateDateColumn() createdOn?: Date;
 
