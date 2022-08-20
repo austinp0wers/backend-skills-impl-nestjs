@@ -31,7 +31,10 @@ export class ReservationService {
   async findAllReservations(jwtHeader: JwtPayload) {
     const user_id = jwtHeader.id;
     const orderList = await this.reservationRepo.find({
-      relations: ['shop'],
+      where: {
+        user_id,
+      },
+      relations: ['shop_id'],
     });
 
     console.log('orderList', orderList);
@@ -40,7 +43,6 @@ export class ReservationService {
 
   async findReservation(jwtHeader: JwtPayload, reservation_id: string) {
     const user_id = jwtHeader.id;
-    //user_id === reservation.user_id
 
     const reservation = await this.reservationRepo.findOne({
       where: {
