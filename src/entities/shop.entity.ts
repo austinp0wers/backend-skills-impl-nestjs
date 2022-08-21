@@ -8,7 +8,7 @@ import {
   Unique,
 } from 'typeorm';
 import { mainCategory } from '../common/enum/categoryType.enum';
-import { UserEntity } from './user.entity';
+// import { UserEntity } from './user.entity';
 
 @Entity('shop')
 @Unique(['shop_id'])
