@@ -1,3 +1,7 @@
+import { ReservationEntity } from './../../entities/reservation.entity';
+import { UserEntity } from './../../entities/user.entity';
+import { paymentEntity } from './../../entities/payment.entity';
+import { ShopEntity } from './../../entities/shop.entity';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import 'reflect-metadata';
 
@@ -8,10 +12,10 @@ export const typeORMconfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DATABASE,
-  entities: ['dist/entities/*.entity{.ts,.js}', 'src/*.entity{.ts,.js}'],
-  synchronize: true,
-  // migrations: [
-  //   /*..*/
-  // ],
+  entities: [ShopEntity, paymentEntity, UserEntity, ReservationEntity],
+  synchronize: false,
+  migrations: [
+    /*..*/
+  ],
   typeorm: 'ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js',
 };
