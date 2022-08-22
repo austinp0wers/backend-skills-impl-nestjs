@@ -2,8 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -24,10 +22,6 @@ export class ShopEntity {
   @Column({ type: 'enum', enum: mainCategory }) category: string;
 
   @Column({ type: 'boolean', nullable: false, default: true }) visible: boolean;
-
-  // @ManyToOne(() => UserEntity)
-  // @JoinColumn({ name: 'user_id' })
-  // user_id: UserEntity;
 
   @CreateDateColumn() createdOn?: Date;
 
