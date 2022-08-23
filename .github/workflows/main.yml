@@ -1,4 +1,4 @@
-name: CI
+name: SUPER-LINTER
 
 on: push
 
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run Super-Linter
+      - name: Run SUPER-LINTER
         uses: github/super-linter@v3
         env:
           DEFAULT_BRANCH: main
