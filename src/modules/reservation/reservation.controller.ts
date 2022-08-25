@@ -1,5 +1,5 @@
+import { HttpExceptionFilter } from './../../exceptions/httpException';
 import { JwtPayload } from 'src/modules/auth/interfaces/jwtpayload.interface';
-import { JwtService } from '@nestjs/jwt';
 import { SubmitOrderDto } from './dto/submit.order.dto';
 import { JwtAuthGuard } from '../../guards/jwt.guard';
 import { ReservationService } from './reservation.service';
@@ -12,11 +12,13 @@ import {
   UseGuards,
   Get,
   Headers,
+  UseFilters,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Reservation')
 @Controller('reservation')
+@UseFilters(new HttpExceptionFilter())
 export class ReservationController {
   constructor(private reservationService: ReservationService) {}
 
