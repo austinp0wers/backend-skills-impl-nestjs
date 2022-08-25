@@ -17,5 +17,4 @@ export const typeORMconfig: TypeOrmModuleOptions = {
   migrations: [
     /*..*/
   ],
-  typeorm: 'ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js',
 };

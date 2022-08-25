@@ -23,6 +23,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiOperation } from '@nestjs/swagger';
+import { reqShopList } from './interfaces/ShopListReq.interface';
 
 @Controller('shop')
 @UseFilters(new HttpExceptionFilter())
@@ -69,8 +70,8 @@ export class ShopController {
   @ApiOperation({ summary: '계시물 목록 전체 조회' })
   @Get('')
   @HttpCode(200)
-  async getBoardList(@Query('category') category: string) {
-    return await this.shopService.getShopList(category);
+  async getBoardList(@Query() shopReqQuery: reqShopList) {
+    return await this.shopService.getShopList(shopReqQuery);
   }
 
   @UseGuards(JwtAuthGuard)
