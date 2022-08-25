@@ -12,8 +12,9 @@ import { RegisterStatus } from './interfaces/register.status';
 import { LoginUserDto } from './dto/login.user.dto';
 import { LoginStatus } from './interfaces/loginstatus.interface';
 import { HttpExceptionFilter } from 'src/exceptions/httpException';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

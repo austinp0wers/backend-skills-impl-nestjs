@@ -1,6 +1,3 @@
-import { ShopEntity } from '../../entities/shop.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
 import { CreateBoardPostDto } from './dto/createBoardDto';
 import { reqShopList } from './interfaces/ShopListReq.interface';
 import { ShopRepository } from './shop.repository';

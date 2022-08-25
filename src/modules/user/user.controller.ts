@@ -7,8 +7,9 @@ import {
 } from '@nestjs/common';
 import { LoggingInterceptor } from '../../interceptors/success.interceptor';
 import { ConvertToStringPipe } from '../../filters/string.pipe';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('user')
 @UseInterceptors(LoggingInterceptor)
 export class UserController {

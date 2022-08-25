@@ -22,10 +22,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { reqShopList } from './interfaces/ShopListReq.interface';
 
 @Controller('shop')
+@ApiTags('Shop')
 @UseFilters(new HttpExceptionFilter())
 export class ShopController {
   constructor(
