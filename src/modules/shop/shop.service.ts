@@ -2,45 +2,35 @@ import { ShopEntity } from '../../entities/shop.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { CreateBoardPostDto } from './dto/createBoardDto';
+import { reqShopList } from './interfaces/ShopListReq.interface';
+import { ShopRepository } from './shop.repository';
+import { Injectable } from '@nestjs/common';
+import { UpdatePostDto } from './dto/updateBoardDto';
 
+@Injectable()
 export class ShopService {
-  constructor(
-    @InjectRepository(ShopEntity)
-    private shopRepo: Repository<ShopEntity>,
-  ) {}
+  constructor(private readonly shopRepository: ShopRepository) {}
 
   async registerShop(createPostDto: CreateBoardPostDto) {
-    try {
-      await this.shopRepo.insert(createPostDto);
-    } catch (err) {
-      throw new Error('insert failed');
-    }
-    return 'OK';
+    return await this.shopRepository.registerShop(createPostDto);
   }
 
-  async getShopList(category: string) {
-    if (!category) {
-      category = `%%`;
+  async getShopList(shopReqQuery: reqShopList) {
+    if (!shopReqQuery.category) {
+      shopReqQuery.category = `%%`;
     }
-    const boardList = await this.shopRepo.find({
-      where: { category: Like(category), visible: true },
-    });
-    return boardList;
+    return await this.shopRepository.getShopList(shopReqQuery);
   }
 
   async getShop(shop_id: string) {
-    const post = this.shopRepo.findOne({ where: { shop_id, visible: true } });
-    return post;
+    return await this.shopRepository.getShopDetail(shop_id);
   }
 
-  async updateShop(shop_id, updatePostDto) {
-    const updateInfo = { ...updatePostDto, updatedOn: new Date() };
-    this.shopRepo.update({ shop_id }, updateInfo);
+  async updateShop(shop_id: string, updatePostDto: UpdatePostDto) {
+    return this.shopRepository.updateShopDetail(shop_id, updatePostDto);
   }
 
   async deleteShop(shop_id) {
-    this.shopRepo.update({ shop_id }, { visible: false });
-    const deletedAt = new Date();
-    return { success: true, post_title: shop_id, deletedAt };
+    return this.shopRepository.deleteShop(shop_id);
   }
 }
