@@ -1,57 +1,52 @@
-import { JwtPayload } from 'src/modules/auth/interfaces/jwtpayload.interface';
 import { SubmitOrderDto } from './dto/submit.order.dto';
-import { ReservationEntity } from '../../entities/reservation.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { saveOrderInformationDto } from './dto/save.order.dto';
+import { ReservationRepository } from './reservation.repository';
+import { JwtPayload } from 'src/modules/auth/interfaces/jwtpayload.interface';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ReservationService {
-  constructor(
-    @InjectRepository(ReservationEntity)
-    private reservationRepo: Repository<ReservationEntity>,
-  ) {}
+  constructor(private readonly reservationRepo: ReservationRepository) {}
+
   async makeReservation(
     orderInfo: SubmitOrderDto,
-    shop_id: any,
+    shop_id: string,
     decodedJwt: JwtPayload,
   ) {
-    const { reserve_date } = orderInfo;
-    const reservedDate = new Date(reserve_date);
-
-    const orderInformation = {
+    const reservedDate = new Date(orderInfo.reserve_date);
+    const orderInformation: saveOrderInformationDto = {
       user_id: decodedJwt.id,
       reserve_date: reservedDate,
       shop_id,
     };
-    const orderInsertResult = await this.reservationRepo.insert(
+    const orderInsertResult = await this.reservationRepo.saveReservation(
       orderInformation,
     );
+
     return orderInsertResult;
   }
 
-  async findAllReservations(jwtHeader: JwtPayload) {
+  async getMyReservations(jwtHeader: JwtPayload) {
     const user_id = jwtHeader.id;
-    const orderList = await this.reservationRepo.find({
-      where: {
-        user_id,
-      },
-      relations: ['shop_id'],
-    });
-
-    console.log('orderList', orderList);
+    const orderList = await this.reservationRepo.getMyReservations(user_id);
     return orderList;
   }
 
-  async findReservation(jwtHeader: JwtPayload, reservation_id: string) {
+  async getReservation(jwtHeader: JwtPayload, reservation_id: string) {
     const user_id = jwtHeader.id;
 
-    const reservation = await this.reservationRepo.findOne({
-      where: {
-        reservation_id,
-        user_id,
-      },
-      relations: ['shop_id'],
-    });
+    const reservation = await this.reservationRepo.getReservation(
+      user_id,
+      reservation_id,
+    );
 
     return reservation;
+  }
+
+  async deleteReservation(jwtHeader: JwtPayload, reservation_id: string) {
+    const user_id = jwtHeader.id;
+    await this.reservationRepo.deleteReservation(user_id, reservation_id);
+
+    return { success: true };
   }
 }
