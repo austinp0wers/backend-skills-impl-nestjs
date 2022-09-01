@@ -11,34 +11,40 @@ export class ReservationRepository {
   ) {}
 
   async getMyReservations(user_id: string) {
-    return await this.reservationRepo.find({
-      where: {
-        user_id,
-      },
-      relations: ['shop_id'],
-    });
+    return await this.reservationRepo
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.shop_id', 'shop_id')
+      .where('reservation.user_id = :user_id', { user_id })
+      .getMany();
   }
 
   async saveReservation(orderInfoDto) {
-    await this.reservationRepo.save(orderInfoDto);
-    return { success: true, code: 200 };
+    const result = await this.reservationRepo
+      .createQueryBuilder()
+      .insert()
+      .into('reservations')
+      .values(orderInfoDto)
+      .execute();
+    if (result) return { success: true, code: 200 };
   }
 
   async getReservation(user_id: string, reservation_id: string) {
-    return await this.reservationRepo.find({
-      where: {
-        reservation_id,
-        user_id,
-      },
-      relations: ['shop_id'],
-    });
+    return await this.reservationRepo
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.shop_id', 'shop_id')
+      .where('reservation.reservation_id = :reservation_id', { reservation_id })
+      .andWhere('reservation.user_id = :user_id', { user_id })
+      .getOne();
   }
 
   async deleteReservation(user_id: string, reservation_id: string) {
-    const result = await this.reservationRepo.delete({
-      user_id,
-      reservation_id,
-    });
+    const result = await this.reservationRepo
+      .createQueryBuilder()
+      .delete()
+      .from('reservations')
+      .where('user_id = :user_id', { user_id })
+      .andWhere('reservation_id = :reservation_id', { reservation_id })
+      .execute();
     return result;
   }
 }
