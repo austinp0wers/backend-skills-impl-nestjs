@@ -5,7 +5,11 @@ on:
     branches:
       - main
 
-  steps:
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    
+    steps:
     - uses: actions/checkout@v3
     - name: run test coverage
       run: yarn run test
