@@ -1,1 +1,18 @@
+name: CI
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  testscript:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: yarn
+        run: yarn
+
+      - name: yarn run test:cov
+        run: yarn test:cov
