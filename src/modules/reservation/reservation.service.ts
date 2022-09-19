@@ -15,7 +15,7 @@ export class ReservationService {
   ) {
     const reservedDate = new Date(orderInfo.reserve_date);
     const orderInformation: saveOrderInformationDto = {
-      user_id: decodedJwt.id,
+      user_id: decodedJwt.user_id,
       reserve_date: reservedDate,
       shop_id,
     };
@@ -27,13 +27,13 @@ export class ReservationService {
   }
 
   async getMyReservations(jwtHeader: JwtPayload) {
-    const user_id = jwtHeader.id;
+    const user_id = jwtHeader.user_id;
     const orderList = await this.reservationRepo.getMyReservations(user_id);
     return orderList;
   }
 
   async getReservation(jwtHeader: JwtPayload, reservation_id: string) {
-    const user_id = jwtHeader.id;
+    const user_id = jwtHeader.user_id;
 
     const reservation = await this.reservationRepo.getReservation(
       user_id,
@@ -44,7 +44,7 @@ export class ReservationService {
   }
 
   async deleteReservation(jwtHeader: JwtPayload, reservation_id: string) {
-    const user_id = jwtHeader.id;
+    const user_id = jwtHeader.user_id;
     await this.reservationRepo.deleteReservation(user_id, reservation_id);
 
     return { success: true };

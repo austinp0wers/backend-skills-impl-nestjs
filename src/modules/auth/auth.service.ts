@@ -36,6 +36,7 @@ export class AuthService {
     try {
       user = await this.userService.findByLogin(loginUserDto);
     } catch (err) {
+      console.log(err);
       throw Error('findByLogin Internal server error');
     }
 
@@ -52,10 +53,10 @@ export class AuthService {
     };
   }
 
-  private _createJWTToken({ id, role }: UserDto): any {
+  private _createJWTToken({ user_id, role }: UserDto): any {
     const expiresIn = process.env.EXPIRESIN;
 
-    const user: JwtPayload = { id, role };
+    const user: JwtPayload = { user_id, role };
     const accessToken = this.jwtService.sign(user);
     return {
       expiresIn,

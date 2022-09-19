@@ -1,5 +1,5 @@
-import { CreateBoardPostDto } from './dto/createBoardDto';
-import { UpdatePostDto } from './dto/updateBoardDto';
+import { CreateShopDto } from './dto/createShopDto';
+import { UpdateShopInfoDto } from './dto/updateShopInfoDto';
 import { ShopEntity } from './../../entities/shop.entity';
 import { Repository, Like } from 'typeorm';
 import { Injectable } from '@nestjs/common';
@@ -27,7 +27,7 @@ export class ShopRepository {
     return post;
   }
 
-  async updateShopDetail(shop_id: string, updateShopDto: UpdatePostDto) {
+  async updateShopDetail(shop_id: string, updateShopDto: UpdateShopInfoDto) {
     const updateInfo = { ...updateShopDto, updatedOn: new Date() };
     this.shopRepository.update({ shop_id }, updateInfo);
 
@@ -40,7 +40,7 @@ export class ShopRepository {
     return { success: true, shop_id };
   }
 
-  async registerShop(createShopDto: CreateBoardPostDto) {
+  async registerShop(createShopDto: CreateShopDto) {
     await this.shopRepository.insert(createShopDto);
 
     return { success: true, msg: 'OK' };

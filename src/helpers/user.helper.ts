@@ -3,10 +3,10 @@ import { UserEntity } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
 export const toUserDto = (userInfo: UserEntity) => {
-  const { id, email, name, role } = userInfo;
+  const { user_id, email, name, role } = userInfo;
 
   const userDto: UserDto = {
-    id,
+    user_id,
     email,
     name,
     role,

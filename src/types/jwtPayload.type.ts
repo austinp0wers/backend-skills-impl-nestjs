@@ -1,4 +1,4 @@
 type JwtPayloadType = {
-  id: string;
+  user_id: string;
   role: string;
 };
