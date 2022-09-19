@@ -9,12 +9,13 @@ import * as bcrypt from 'bcrypt';
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @PrimaryGeneratedColumn('uuid') user_id: string;
   @Column({ type: 'varchar', nullable: false, unique: true }) email: string;
   @Column({ type: 'varchar', nullable: false }) password: string;
   @Column({ type: 'varchar', nullable: false }) name: string;
   @Column({ type: 'varchar', nullable: false, default: 'member' }) role: string;
   @Column({ type: 'varchar', nullable: false }) phoneNumber: string;
+  @CreateDateColumn() lastLoggedIn?: Date;
   @CreateDateColumn() createdOn?: Date;
   @CreateDateColumn() updatedOn?: Date;
 

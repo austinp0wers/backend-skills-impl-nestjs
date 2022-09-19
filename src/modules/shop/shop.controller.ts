@@ -2,8 +2,8 @@ import { DeleteShopStatus } from './interfaces/shopDelete.interface';
 import { JwtService } from '@nestjs/jwt';
 import { HttpExceptionFilter } from 'src/exceptions/httpException';
 import { ShopService } from './shop.service';
-import { UpdatePostDto } from './dto/updateBoardDto';
-import { CreateBoardPostDto } from './dto/createBoardDto';
+import { UpdateShopInfoDto } from './dto/updateShopInfoDto';
+import { CreateShopDto } from './dto/createShopDto';
 import { JwtAuthGuard } from '../../guards/jwt.guard';
 import {
   Body,
@@ -39,7 +39,7 @@ export class ShopController {
   @UseGuards(JwtAuthGuard)
   async createPost(
     @Headers('Authorization') authorization: any,
-    @Body() createPostDto: CreateBoardPostDto,
+    @Body() createPostDto: CreateShopDto,
     @Res() res: Response,
   ) {
     // 'Bearer ' 제거 하고 decode 해야 한다.
@@ -56,7 +56,7 @@ export class ShopController {
   @HttpCode(200)
   async updatePost(
     @Param('shop_id') shop_id: string,
-    @Body() updatePostDto: UpdatePostDto,
+    @Body() updatePostDto: UpdateShopInfoDto,
   ) {
     return this.shopService.updateShop(shop_id, updatePostDto);
   }

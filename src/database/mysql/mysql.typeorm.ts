@@ -1,3 +1,4 @@
+import { LocationEntity } from './../../entities/location.entity';
 import { ReservationEntity } from './../../entities/reservation.entity';
 import { UserEntity } from './../../entities/user.entity';
 import { paymentEntity } from './../../entities/payment.entity';
@@ -12,7 +13,13 @@ export const typeORMconfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DATABASE,
-  entities: [ShopEntity, paymentEntity, UserEntity, ReservationEntity],
+  entities: [
+    ShopEntity,
+    paymentEntity,
+    UserEntity,
+    ReservationEntity,
+    LocationEntity,
+  ],
   synchronize: false,
   migrations: [
     /*..*/
