@@ -20,7 +20,7 @@ export const typeORMconfig: TypeOrmModuleOptions = {
     ReservationEntity,
     LocationEntity,
   ],
-  synchronize: false,
+  synchronize: true,
   migrations: [
     /*..*/
   ],
