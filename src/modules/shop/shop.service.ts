@@ -1,18 +1,33 @@
 import { CreateShopDto } from './dto/createShopDto';
 import { reqShopList } from './interfaces/ShopListReq.interface';
 import { ShopRepository } from './shop.repository';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { UpdateShopInfoDto } from './dto/updateShopInfoDto';
-
+import { Cache } from 'cache-manager';
 @Injectable()
 export class ShopService {
-  constructor(private readonly shopRepository: ShopRepository) {}
+  constructor(
+    private readonly shopRepository: ShopRepository,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   async registerShop(createPostDto: CreateShopDto) {
-    return await this.shopRepository.registerShop(createPostDto);
+    const saveResult = await this.shopRepository.registerShop(createPostDto);
+
+    console.log('saveResult', saveResult);
+    const temp = saveResult.identifiers[0].shop_id;
+    const saveRedisResult = await this.cacheManager.set('shops', temp);
+    console.log('saveRedisResult', saveRedisResult);
+    // const shopId = saveResult.shop_id;
+    // if(saveResult){
+    //   await this.cacheManager.set('shops', )
+    // }
+    return saveResult;
   }
 
   async getShopList(shopReqQuery: reqShopList) {
+    const shops = await this.cacheManager.get('shops');
+
     if (!shopReqQuery.category) {
       shopReqQuery.category = `%%`;
     }

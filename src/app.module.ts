@@ -1,3 +1,4 @@
+import { CacheDBModule } from './redisCache.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,12 +10,14 @@ import { UserModule } from './modules/user/user.module';
 import { ShopModule } from './modules/shop/shop.module';
 import { ConfigModule } from '@nestjs/config';
 import { ReservationModule } from './modules/reservation/reservation.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
+    CacheDBModule,
     TypeOrmModule.forRoot(typeORMconfig),
     AuthModule,
     ConfigurationModule,

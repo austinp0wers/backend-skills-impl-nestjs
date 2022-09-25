@@ -41,8 +41,8 @@ export class ShopRepository {
   }
 
   async registerShop(createShopDto: CreateShopDto) {
-    await this.shopRepository.insert(createShopDto);
+    const insertResult = await this.shopRepository.insert(createShopDto);
 
-    return { success: true, msg: 'OK' };
+    return insertResult;
   }
 }
