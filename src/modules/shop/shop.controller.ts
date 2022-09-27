@@ -24,14 +24,16 @@ import {
 import { Response } from 'express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { reqShopList } from './interfaces/ShopListReq.interface';
+import { MessageService } from './../redis/redis.service';
 
 @Controller('shop')
 @ApiTags('Shop')
 @UseFilters(new HttpExceptionFilter())
 export class ShopController {
   constructor(
-    private shopService: ShopService,
-    private jwtService: JwtService,
+    private readonly shopService: ShopService,
+    private readonly jwtService: JwtService,
+    private readonly messageService: MessageService,
   ) {}
 
   @ApiOperation({ summary: '계시물 등록' })
@@ -43,7 +45,9 @@ export class ShopController {
     @Res() res: Response,
   ) {
     // 'Bearer ' 제거 하고 decode 해야 한다.
-    await this.shopService.registerShop(createPostDto);
+    const registerDetail = await this.shopService.registerShop(createPostDto);
+    this.messageService.publish(JSON.stringify(registerDetail));
+
     return res.status(HttpStatus.OK).json({
       code: 200,
       msg: 'OK',
@@ -82,6 +86,8 @@ export class ShopController {
   async deletePoset(
     @Param('shop_id') shop_id: string,
   ): Promise<DeleteShopStatus> {
+    const result = { msg: 'idk' };
+    this.messageService.publish(JSON.stringify(result));
     return this.shopService.deleteShop(shop_id);
   }
 }

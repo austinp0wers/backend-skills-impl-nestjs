@@ -1,4 +1,5 @@
-import { CacheDBModule } from './redisCache.module';
+import { MessageModule } from './modules/redis/message.module';
+import { CacheDBModule } from './modules/redis/redisCache.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,6 +19,7 @@ import { ReservationModule } from './modules/reservation/reservation.module';
       envFilePath: '.env',
     }),
     CacheDBModule,
+    MessageModule,
     TypeOrmModule.forRoot(typeORMconfig),
     AuthModule,
     ConfigurationModule,
