@@ -1,3 +1,4 @@
+import { MessageService } from './../redis/redis.service';
 import { JwtService } from '@nestjs/jwt';
 import { ShopEntity } from '../../entities/shop.entity';
 import { ShopService } from './shop.service';
@@ -9,6 +10,6 @@ import { ShopRepository } from './shop.repository';
   imports: [TypeOrmModule.forFeature([ShopEntity])],
   exports: [ShopService],
   controllers: [ShopController],
-  providers: [ShopService, JwtService, ShopRepository],
+  providers: [ShopService, JwtService, ShopRepository, MessageService],
 })
 export class ShopModule {}
